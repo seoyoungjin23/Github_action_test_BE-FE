@@ -33,6 +33,13 @@ jobs:
       run: npm run build
       working-directory: ./src/frontend
 
+    - name: List files in React build directory
+      run: ls -la ./src/frontend/dist
+      continue-on-error: true
+
+    - name: Create static directory if not exists
+      run: mkdir -p ./src/backend/src/main/resources/static/
+
     - name: Copy React build files to Spring Boot resources
       run: cp -r ./src/frontend/dist/* ./src/backend/src/main/resources/static/
 
