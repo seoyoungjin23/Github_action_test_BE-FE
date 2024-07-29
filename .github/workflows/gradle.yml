@@ -34,7 +34,7 @@ jobs:
       working-directory: ./src/frontend
 
     - name: Copy React build files to Spring Boot resources
-      run: cp -r ./src/frontend/build/* ./src/backend/src/main/resources/static/
+      run: cp -r ./src/frontend/dist/* ./src/backend/src/main/resources/static/
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./src/backend/gradlew
@@ -50,19 +50,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "./src/backend/build/libs/non-toxic-diary-0.0.1-SNAPSHOT.jar"
-        target: "~/non-toxic-diary-0.0.1-SNAPSHOT.jar"
-
-    - name: Restarting Server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          export DB_URL=${{ secrets.DB_URL }}
-          export DB_USERNAME=${{ secrets.DB_USERNAME }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export JWT_SECRET=${{ secrets.JWT_SECRET }}
-          pm2 stop 0 || true
-          pm2 del 0 || true
-          pm2 start "java -jar ~/non-toxic-diary-0.0.1-SNAPSHOT.jar"
+        target: "~/non-toxic-diary-0.0.
