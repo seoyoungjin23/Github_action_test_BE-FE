@@ -63,6 +63,10 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          export DB_URL=${{ secrets.DB_URL }}
+          export DB_USERNAME=${{ secrets.DB_USERNAME }}
+          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          export JWT_SECRET=${{ secrets.JWT_SECRET }}
           pm2 stop 0
           pm2 del 0
           pm2 start "java -jar src/backend/build/libs/non-toxic-diary-0.0.1-SNAPSHOT.jar"
