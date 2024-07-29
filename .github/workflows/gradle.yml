@@ -33,10 +33,6 @@ jobs:
       run: npm run build
       working-directory: ./src/frontend
 
-    - name: List files in React build directory
-      run: ls -la ./src/frontend/dist
-      continue-on-error: true
-
     - name: Create static directory if not exists
       run: mkdir -p ./src/backend/src/main/resources/static/
 
@@ -47,7 +43,8 @@ jobs:
       run: chmod +x ./src/backend/gradlew
 
     - name: Build with Gradle Wrapper
-      run: ./src/backend/gradlew build -x test
+      run: ./gradlew build -x test
+      working-directory: ./src/backend
 
     - name: Copy files to server
       uses: appleboy/scp-action@master
