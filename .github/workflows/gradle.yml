@@ -54,7 +54,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "./src/backend/build/libs/non-toxic-diary-0.0.1-SNAPSHOT.jar"
-        target: "~/non-toxic-diary-0.0.1-SNAPSHOT.jar"
+        target: "."
 
     - name: Restarting Server
       uses: appleboy/ssh-action@master
@@ -69,4 +69,4 @@ jobs:
           export JWT_SECRET=${{ secrets.JWT_SECRET }}
           pm2 stop 0 || true
           pm2 del 0 || true
-          pm2 start "java -jar ~/non-toxic-diary-0.0.1-SNAPSHOT.jar"
+          pm2 start "."
