@@ -70,10 +70,10 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          export DB_URL= ${{ secrets.DB_URL }}
-          export DB_USERNAME= ${{ secrets.DB_USERNAME }}
-          export DB_PASSWORD= ${{ secrets.DB_PASSWORD }}
-          export JWT_SECRET= ${{ secrets.JWT_SECRET }}
+          export DB_URL= jdbc:mysql://localhost:3306/non_toxic_diary
+          export DB_USERNAME= non_toxic_diary_admin
+          export DB_PASSWORD= apdlvmfmmnn12!
+          export JWT_SECRET= N5kBncritabfek0nqDnckw2nks7ckwjbKCWlnSbzpujd1MbcKnclWEsPng
           pm2 stop 0
           pm2 del 0
           pm2 start "java -jar deploy/backend/non-toxic-diary-0.0.1-SNAPSHOT.jar"
