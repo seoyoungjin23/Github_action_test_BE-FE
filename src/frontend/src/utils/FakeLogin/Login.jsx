@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Login = () => {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://3.37.98.95:8080/api/auth/login', {
+      const response = await fetch('http://13.125.171.199:8080/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,6 +77,6 @@ const Login = () => {
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
   );
-};
+}
 
 export default Login;

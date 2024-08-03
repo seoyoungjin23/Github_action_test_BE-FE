@@ -1,0 +1,91 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #FBF4EE;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #FBF4EE; /* Ensure the header background matches the wrapper */
+  z-index: 1;
+}
+
+.textContainer {
+  flex: 1;
+}
+
+.button {
+  margin-left: auto;
+}
+
+.challengeList {
+  list-style: none;
+  padding: 20px;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.challengeList::-webkit-scrollbar {
+  display: none;
+}
+
+
+.challengeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.challengeInfo {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+.challengeText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.challengeActions {
+  display: flex;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.editButton,
+.deleteButton {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+}
