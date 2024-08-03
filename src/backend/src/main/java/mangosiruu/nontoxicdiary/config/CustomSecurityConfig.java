@@ -2,12 +2,11 @@ package mangosiruu.nontoxicdiary.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import mangosiruu.nontoxicdiary.security.CustomAuthenticationEntryPoint;
 import mangosiruu.nontoxicdiary.security.UserDetailsServiceImpl;
 import mangosiruu.nontoxicdiary.security.filter.LoginFilter;
 import mangosiruu.nontoxicdiary.security.filter.TokenCheckFilter;
+import mangosiruu.nontoxicdiary.security.handler.LoginFailureHandler;
 import mangosiruu.nontoxicdiary.security.handler.LoginSuccessHandler;
-import mangosiruu.nontoxicdiary.service.RefreshTokenService;
 import mangosiruu.nontoxicdiary.service.UserInfoService;
 import mangosiruu.nontoxicdiary.util.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -40,7 +39,6 @@ public class CustomSecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoService userInfoService;
     private final UserDetailsServiceImpl userDetailsService;
-    private final RefreshTokenService refreshTokenService;
 
 
     @Bean
@@ -54,7 +52,7 @@ public class CustomSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         // 접근 허용할 도메인, 메서드, 헤더 설정
         CorsConfiguration configuration=new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // 프론트 서버 도메인
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));  // 프론트 서버 도메인
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
@@ -81,13 +79,12 @@ public class CustomSecurityConfig {
         LoginFilter loginFilter=new LoginFilter("/api/auth/login");
         loginFilter.setAuthenticationManager(authManager);
 
-        LoginSuccessHandler loginSuccessHandler=new LoginSuccessHandler(jwtUtil, userInfoService, refreshTokenService);
+        LoginSuccessHandler loginSuccessHandler=new LoginSuccessHandler(jwtUtil, userInfoService);
+        LoginFailureHandler loginFailureHandler=new LoginFailureHandler();
         loginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
+        loginFilter.setAuthenticationFailureHandler(loginFailureHandler);
 
         http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // 인증 예외 처리 커스텀
-        http.exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
 
 
         // TokenCheckFilter 설정
