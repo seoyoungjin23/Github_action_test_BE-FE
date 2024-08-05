@@ -75,7 +75,7 @@ const MyChallengeListView = () => {
     }, [finished]);
 
     const moveToNewMyChallengeView = (challenge) => {
-        navigate("/newmychallengeview", { state: { challenge } });
+        navigate("/newmychallenge", { state: { challenge } });
     };
 
     const handleTabChange = (newFinished) => {
@@ -86,9 +86,12 @@ const MyChallengeListView = () => {
         moveToNewMyChallengeView(challenge);
     }, [navigate]);
 
-    const handleCardClick = useCallback((challenge) => {
-        navigate(`/challengedetailview/${challenge.id}`);
+
+    // finished도 같이 넘김
+    const handleCardClick = useCallback((challenge, finished) => {
+        navigate(`/challengedetail/${challenge.id}`, { state: { finished } });
     }, [navigate]);
+    
 
     const handleDelete = useCallback((id) => {
         deleteChallenge(id);
@@ -129,21 +132,22 @@ const MyChallengeListView = () => {
             <ul className={style.challengeList}>
                 {challengeList.map((challenge) => (
                     <li 
-                      key={challenge.id}
-                      className={style.challengeItem}
-                      onClick={() => handleCardClick(challenge)}
+                        key={challenge.id}
+                        className={style.challengeItem}
+                        onClick={() => handleCardClick(challenge, finished)}
                     >
-                      <div className={style.challengeInfo}>
+                        <div className={style.challengeInfo}>
                         <Icon input={challenge.category} />
                         <MyChallengeListViewEndDate challenge={challenge} />
                         <MyChallengeListViewButton 
-                          challenge={challenge} 
-                          handleEdit={handleEdit} 
-                          handleDelete={handleDelete} 
-                          finished={finished}
-                        />
-                      </div>
-                    </li>
+                            challenge={challenge} 
+                            handleEdit={handleEdit} 
+                            handleDelete={handleDelete} 
+                            finished={finished}
+                         />
+                    </div>
+                  </li>
+                  
                 ))}
             </ul>
         </div>

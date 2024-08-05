@@ -4,14 +4,14 @@ import axios from 'axios';
 import { endpoint } from '../path';
 import { path } from '../../routes/path';
 
-export const BASE_URL = 'http://3.37.98.95:8080';
+export const BASE_URL = 'http://13.125.171.199:8080';
 
 export const axiosInstance = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
-  baseURL: `${BASE_URL}`,
+  baseURL: BASE_URL,
   withCredentials: 'true',
 });
 
@@ -40,11 +40,14 @@ export const handleLogout = async () => {
     );
     if (res.status === 200) {
       localStorage.clear();
+      window.location.href = path.login;
     }
   } catch (error) {
     alert('로그아웃 실패');
   }
 };
+
+let isSessionExpiredAlertShown = false;
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -68,10 +71,13 @@ axiosInstance.interceptors.response.use(
         const newToken = await reissueToken();
         localStorage.setItem('token', newToken);
         originalConfig.headers.authorization = `Bearer ${newToken}`;
-        return await axios(error.config);
+        return await axiosInstance(originalConfig);
       } catch (refreshError) {
-        window.alert('자동으로 로그인 연장 되었습니다.');
-        window.location.replace(redirectUrl);
+        if (!isSessionExpiredAlertShown) {
+          isSessionExpiredAlertShown = true;
+          window.alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
+          window.location.replace(redirectUrl);
+        }
         return Promise.reject(refreshError);
       }
     }
