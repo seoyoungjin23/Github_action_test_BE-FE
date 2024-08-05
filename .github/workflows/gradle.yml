@@ -59,7 +59,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: src/frontend/dist/*
-        target: /var/www/html  # 서버에서 프론트엔드 파일을 배포할 경로
+        target: deploy/frontend  # 서버에서 프론트엔드 파일을 배포할 경로
         strip_components: 3
 
     - name: Restarting Server
